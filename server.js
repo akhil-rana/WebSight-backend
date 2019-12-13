@@ -14,6 +14,8 @@ app.post("/postData", bodyParser.json(), (req, res) => {
   // res.json(req.body.input);
   searchKey = req.body.input;
   searchKey = searchKey.replace(/ /g, "+");
+  console.log(searchKey);
+
   var url = "https://www.google.co.in/search?q=" + searchKey + "&num=10";
   google_scrape(url, res);
 });
