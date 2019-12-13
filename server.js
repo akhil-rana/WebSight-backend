@@ -34,7 +34,7 @@ function google_scrape(url, res) {
       arr1 = [];
     arr2 = [];
     var HTML = await page.content();
-    $(" .LC20lb", HTML).each(function() {
+    $(".rc .r .LC20lb", HTML).each(function() {
       arr.push(
         $(this)
           .parent()
