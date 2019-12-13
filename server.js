@@ -17,22 +17,20 @@ app.post("/postData", bodyParser.json(), (req, res) => {
   console.log(searchKey);
 
   var url = "https://www.google.co.in/search?q=" + searchKey + "&num=10";
-  (async () => {
-    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
-    const page = await browser.newPage();
-    await page.goto(url, {
-      waitUntil: "networkidle2"
-    });
-    google_scrape(url, res, page);
-  })();
+
   google_scrape(url, res);
 });
 var server = app.listen(process.env.PORT || 8080, () =>
   console.log("App listening on port " + PORT)
 );
 
-function google_scrape(url, res, page) {
+function google_scrape(url, res) {
   (async () => {
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+    const page = await browser.newPage();
+    await page.goto(url, {
+      waitUntil: "networkidle2"
+    });
     var arr = [],
       arr1 = [],
       arr2 = [];
@@ -53,6 +51,7 @@ function google_scrape(url, res, page) {
 
     res.json(output);
 
+    browser.close();
     return;
   })();
 }
