@@ -82,14 +82,13 @@ function google_scrape(url, res) {
       // var arr2 = Array.from(new Set(arr));
       // var arr3 = Array.from(new Set(arr1));
       output = { link: url, titles: arr1, urls: arr };
-      // console.log(output);
+      console.log(output);
       res.json(output);
-      //   process.exit();
+
+      // browser.close(); //   process.exit();
       // console.log(output);
       // return output;
     })
-    .then(function() {})
-
     .catch(function(err) {
       //handle error
       console.log(err);
