@@ -30,7 +30,7 @@ function google_scrape(url, url2, res) {
   (async () => {
     const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
-    const page1 = await browser.newPage();
+    const page2 = await browser.newPage();
 
     await page.goto(url, {
       waitUntil: "networkidle2"
@@ -42,7 +42,7 @@ function google_scrape(url, url2, res) {
       arr1 = [],
       arr2 = [];
     var HTML = await page.content();
-    var HTML2 = await page.content();
+    var HTML2 = await page2.content();
 
     $(".rc .r .LC20lb", HTML).each(function() {
       arr.push(
