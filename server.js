@@ -43,7 +43,7 @@ function google_scrape(url, res) {
       );
       arr1.push($(this).text());
     });
-    $(" .s .st", HTML).each(function() {
+    $(".srg .s .st", HTML).each(function() {
       arr2.push($(this).text());
     });
     var output = { link: url, titles: arr1, urls: arr, gist: arr2 };
