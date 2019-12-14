@@ -46,12 +46,7 @@ function google_scrape(url, res) {
     $(" .s .st", HTML).each(function() {
       arr2.push($(this).text());
     });
-    var output = {
-      link: url,
-      titles: arr1,
-      urls: arr,
-      gist: arr2.filter(Boolean)
-    };
+    var output = { link: url, titles: arr1, urls: arr, gist: arr2 };
     // console.log(output);
 
     res.json(output);
