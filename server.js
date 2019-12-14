@@ -32,8 +32,8 @@ function google_scrape(url, res) {
       waitUntil: "networkidle2"
     });
     var arr = [],
-      arr1 = [];
-    // arr2 = [];
+      arr1 = [],
+      arr2 = [];
     var HTML = await page.content();
     $(".rc .r .LC20lb", HTML).each(function() {
       arr.push(
