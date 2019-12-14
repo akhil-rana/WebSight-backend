@@ -16,34 +16,25 @@ app.post("/postData", bodyParser.json(), (req, res) => {
   searchKey = searchKey.replace(/ /g, "+");
   console.log(searchKey);
 
-  var url = "https://www.google.co.in/search?q=" + searchKey + "&num=1";
-  var url2 =
-    "https://www.google.co.in/search?q=" + searchKey + "&num=10&&start=1";
+  var url = "https://www.google.co.in/search?q=" + searchKey + "&num=10";
 
-  google_scrape(url, url2, res);
+  google_scrape(url, res);
 });
 var server = app.listen(process.env.PORT || 8080, () =>
   console.log("App listening on port " + PORT)
 );
 
-function google_scrape(url, url2, res) {
+function google_scrape(url, res) {
   (async () => {
     const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
-    const page2 = await browser.newPage();
-
     await page.goto(url, {
       waitUntil: "networkidle2"
     });
-    await page2.goto(url2, {
-      waitUntil: "networkidle2"
-    });
     var arr = [],
-      arr1 = [],
-      arr2 = [];
+      arr1 = [];
+    // arr2 = [];
     var HTML = await page.content();
-    var HTML2 = await page2.content();
-
     $(".rc .r .LC20lb", HTML).each(function() {
       arr.push(
         $(this)
@@ -52,21 +43,10 @@ function google_scrape(url, url2, res) {
       );
       arr1.push($(this).text());
     });
-    $(" .s .st", HTML).each(function() {
-      arr2.push($(this).text());
-    });
-    $(".rc .r .LC20lb", HTML2).each(function() {
-      arr.push(
-        $(this)
-          .parent()
-          .attr("href")
-      );
-      arr1.push($(this).text());
-    });
-    $(" .s .st", HTML2).each(function() {
-      arr2.push($(this).text());
-    });
-    var output = { link: url, titles: arr1, urls: arr, gist: arr2 };
+    // $(" .s .st", HTML).each(function() {
+    //   arr2.push($(this).text());
+    // });
+    var output = { link: url, titles: arr1, urls: arr };
     // console.log(output);
 
     res.json(output);
