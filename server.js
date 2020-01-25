@@ -3,15 +3,21 @@ const $ = require("cheerio");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const express = require("express");
+const translate = require("@vitalets/google-translate-api");
+
 const app = express();
 const PORT = 8080;
 app.use(cors());
 
 var searchKey;
-app.get("/gsearch", (req, res) => {
-  res.send("Welcome to post Node API");
+var translateQuery;
+app.post("/translate", bodyParser.json(), (req, res) => {
+  translateQuery = req.body.input;
+  console.log("Input: " + translateQuery);
+  gTranslate(res, translateQuery);
 });
-app.post("/postData", bodyParser.json(), (req, res) => {
+
+app.post("/google-search", bodyParser.json(), (req, res) => {
   searchKey = req.body.input;
   searchKey = searchKey.replace(/ /g, "+");
   console.log(searchKey);
@@ -54,4 +60,19 @@ function google_scrape(url, res) {
     browser.close();
     return;
   })();
+}
+
+function gTranslate(res1, query) {
+  translate(query, { to: "en" })
+    .then(res => {
+      console.log("Output: " + res.text);
+      //=> I speak English
+      //   console.log(res.from.language.iso);
+      var output = { input: query, lang: res.from.language.iso, out: res.text };
+
+      res1.json(output);
+    })
+    .catch(err => {
+      console.error(err);
+    });
 }
