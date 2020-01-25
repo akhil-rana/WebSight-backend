@@ -14,7 +14,7 @@ var translateQuery;
 var outLangCode;
 app.post("/translate", bodyParser.json(), (req, res) => {
   translateQuery = req.body.input;
-  outLangCode = req.body.outLang;
+  outLangCode = req.body.outCode;
 
   console.log("Input: " + translateQuery + "  " + outLangCode);
 
