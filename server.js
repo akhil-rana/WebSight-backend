@@ -20,7 +20,6 @@ app.post("/translate", bodyParser.json(), (req, res) => {
 
   gTranslate(res, translateQuery, outLangCode);
 });
-s;
 
 app.post("/google-search", bodyParser.json(), (req, res) => {
   searchKey = req.body.input;
