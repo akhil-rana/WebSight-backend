@@ -13,6 +13,8 @@ var searchKey;
 var translateQuery;
 app.post("/translate", bodyParser.json(), (req, res) => {
   translateQuery = req.body.input;
+  outLangCode = req.body.outLang;
+
   console.log("Input: " + translateQuery);
   gTranslate(res, translateQuery);
 });
@@ -62,8 +64,8 @@ function google_scrape(url, res) {
   })();
 }
 
-function gTranslate(res1, query) {
-  translate(query, { to: "en" })
+function gTranslate(res1, query, outLang) {
+  translate(query, { to: outLang })
     .then(res => {
       console.log("Output: " + res.text);
       //=> I speak English
