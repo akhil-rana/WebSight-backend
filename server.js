@@ -16,9 +16,9 @@ app.post("/translate", bodyParser.json(), (req, res) => {
   translateQuery = req.body.input;
   outLangCode = req.body.outCode;
 
-  console.log("Input: " + translateQuery + "  " + outLangCode);
+  console.log("Input: " + translateQuery);
 
-  gTranslate(res, translateQuery);
+  gTranslate(res, translateQuery, outLangCode);
 });
 
 app.post("/google-search", bodyParser.json(), (req, res) => {
