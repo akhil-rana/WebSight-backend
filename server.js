@@ -101,10 +101,14 @@ function weatherDetails(url, res) {
       // console.log('body:', body);
       let weather = JSON.parse(body);
       //  let message = `It's ${weather.main.temp} degrees in ${weather.name}!`;
-      weather.main.temp = weather.main.temp - 273;
-      weather.main.feels_like = weather.main.feels_like - 273;
-      weather.main.temp_min = weather.main.temp_min - 273;
-      weather.main.temp_max = weather.main.temp_max - 273;
+      try {
+        weather.main.temp = weather.main.temp - 273;
+        weather.main.feels_like = weather.main.feels_like - 273;
+        weather.main.temp_min = weather.main.temp_min - 273;
+        weather.main.temp_max = weather.main.temp_max - 273;
+      } catch (error) {
+        console.log(error);
+      }
 
       console.log(weather);
       res.send(weather);
