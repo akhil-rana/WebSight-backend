@@ -89,7 +89,7 @@ app.post("/news/weather", bodyParser.json(), function(req, res, next) {
   //if(err) throw err
   let apiKey = "fda279e459ede7124cf8b87abb94c20f";
   let city = req.body.input;
-  let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
   weatherDetails(url, res);
 });
 
