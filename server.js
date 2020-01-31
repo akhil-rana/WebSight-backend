@@ -4,10 +4,13 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const express = require("express");
 const translate = require("@vitalets/google-translate-api");
-
+const request = require("request");
 const app = express();
 const PORT = 8080;
 app.use(cors());
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 var searchKey;
 var translateQuery;
@@ -79,4 +82,32 @@ function gTranslate(res1, query, outLang) {
     .catch(err => {
       console.error(err);
     });
+}
+
+//Weather
+app.post("/news/weather", bodyParser.json(), function(req, res, next) {
+  //if(err) throw err
+  let apiKey = "fda279e459ede7124cf8b87abb94c20f";
+  let city = req.body.input;
+  let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+  weatherDetails(url, res);
+});
+
+function weatherDetails(url, res) {
+  request(url, function(err, response, body) {
+    if (err) {
+      console.log("error:", error);
+    } else {
+      // console.log('body:', body);
+      let weather = JSON.parse(body);
+      //  let message = `It's ${weather.main.temp} degrees in ${weather.name}!`;
+      weather.main.temp = weather.main.temp - 273;
+      weather.main.feels_like = weather.main.feels_like - 273;
+      weather.main.temp_min = weather.main.temp_min - 273;
+      weather.main.temp_max = weather.main.temp_max - 273;
+
+      console.log(weather);
+      res.send(weather);
+    }
+  });
 }
