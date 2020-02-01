@@ -88,8 +88,16 @@ function gTranslate(res1, query, outLang) {
 app.post("/news/weather", bodyParser.json(), function(req, res, next) {
   //if(err) throw err
   let apiKey = "fda279e459ede7124cf8b87abb94c20f";
-  let city = req.body.input;
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+  let lon = req.body.lon;
+  let lat = req.body.lat;
+  let url =
+    "https://api.openweathermap.org/data/2.5/weather?lat=" +
+    lat +
+    "&lon=" +
+    lon +
+    "&appid=" +
+    apiKey +
+    "&units=metric";
   weatherDetails(url, res);
 });
 
@@ -101,14 +109,6 @@ function weatherDetails(url, res) {
       // console.log('body:', body);
       let weather = JSON.parse(body);
       //  let message = `It's ${weather.main.temp} degrees in ${weather.name}!`;
-      try {
-        weather.main.temp = weather.main.temp - 273;
-        weather.main.feels_like = weather.main.feels_like - 273;
-        weather.main.temp_min = weather.main.temp_min - 273;
-        weather.main.temp_max = weather.main.temp_max - 273;
-      } catch (error) {
-        console.log(error);
-      }
 
       console.log(weather);
       res.send(weather);
