@@ -109,3 +109,6 @@ function weatherDetails(url, res) {
     }
   });
 }
+
+// server sleeping stopper
+app.get("/sleepstop", (req, res) => {});
