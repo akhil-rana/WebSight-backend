@@ -109,11 +109,10 @@ function weatherDetails(url, res) {
     }
   });
 }
-
 function inshort(url, res) {
-  async () => {
-    var browser = await puppeteer.launch({ args: ["--no-sandbox"] });
-    var page = await browser.newPage();
+  (async () => {
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+    const page = await browser.newPage();
     await page.goto(url, {
       waitUntil: "networkidle2"
     });
@@ -128,11 +127,11 @@ function inshort(url, res) {
     });
     var link = { content: paras, texts: title };
     // link = JSON.stringify(link);
-    console.log(link);
+
     res.json(link);
     browser.close();
     return;
-  };
+  })();
 }
 
 app.post("/news/newsLetter", bodyParser.json(), function(req, res, next) {
@@ -142,6 +141,6 @@ app.post("/news/newsLetter", bodyParser.json(), function(req, res, next) {
 });
 
 // server sleeping stopper
-// app.get("/sleepstop", (req, res) => {
-//   res.send("hello");
-// });
+app.get("/sleepstop", (req, res) => {
+  res.send("hello");
+});
