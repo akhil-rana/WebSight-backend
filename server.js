@@ -109,6 +109,8 @@ function weatherDetails(url, res) {
     }
   });
 }
+
+// Inshorts headlines
 function inshort(url, res) {
   (async () => {
     const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
