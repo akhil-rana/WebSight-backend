@@ -110,5 +110,38 @@ function weatherDetails(url, res) {
   });
 }
 
+function inshort(url, res) {
+  async () => {
+    var browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+    var page = await browser.newPage();
+    await page.goto(url, {
+      waitUntil: "networkidle2"
+    });
+    var paras = [];
+    var title = [];
+    let HTML = await page.content();
+    $(".news-card-title.news-right-box .clickable span", HTML).each(function() {
+      title.push($(this).text());
+    });
+    $(".news-card-content.news-right-box div ", HTML).each(function() {
+      if ($(this).attr("itemprop") == "articleBody") paras.push($(this).text());
+    });
+    var link = { content: paras, texts: title };
+    // link = JSON.stringify(link);
+    console.log(link);
+    res.json(link);
+    browser.close();
+    return;
+  };
+}
+
+app.post("/news/newsLetter", bodyParser.json(), function(req, res, next) {
+  var url = "https://inshorts.com/en/read";
+
+  inshort(url, res);
+});
+
 // server sleeping stopper
-app.get("/sleepstop", (req, res) => {});
+// app.get("/sleepstop", (req, res) => {
+//   res.send("hello");
+// });
