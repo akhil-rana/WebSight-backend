@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var query = "hello world";
+var wikiquery = "hello world";
 query = query.replace(/ /g, "+");
 // console.log(query);
 var url = "https://en.wikipedia.org/w/index.php?search=" + query;
@@ -27,19 +27,13 @@ function wiki_scrape(url) {
     });
     var str = "";
     var HTML = await page.content();
-    $("p", HTML).each(function() {
+    $("#bodyContent p", HTML).each(function() {
       if ($(this).text() != "") {
         str += $(this).text() + "\n\n";
       }
     });
     console.log(str);
-
-    // $(" .s .st", HTML).each(function() {
-    //   arr2.push($(this).text());
-    // });
-    // var output = { link: url, titles: arr1, urls: arr };
-    // console.log(output);
-
+    let wiki = { content: str };
     browser.close();
     return;
   })();
