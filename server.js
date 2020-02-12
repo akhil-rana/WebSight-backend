@@ -188,7 +188,7 @@ function wiki_scrape(res, wikiquery) {
   })();
 }
 
-function gnews_scrape(url) {
+function gnews_scrape(url, res) {
   (async () => {
     const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
