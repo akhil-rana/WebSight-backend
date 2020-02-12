@@ -136,7 +136,7 @@ function inshort(url, res) {
 
     for (i = 0; i < imgUrl.length; i++) {
       imger = imgUrl[i];
-      imgUrl[i] = imger.substring(23, 127);
+      imgUrl[i] = imger.substring(23, imger.length() - 2);
     }
     var link = { content: paras, texts: title, imageCard: imgUrl };
     // link = JSON.stringify(link);
