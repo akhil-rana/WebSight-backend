@@ -15,8 +15,9 @@
     "cheerio": "^1.0.0-rc.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "image-scraper": "^0.2.1",
     "puppeteer": "^2.0.0",
-    "request-promise": "^4.2.5",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5"
   }
 }

@@ -120,6 +120,9 @@ function inshort(url, res) {
     });
     var paras = [];
     var title = [];
+    var imgUrl = [];
+    let imger;
+
     let HTML = await page.content();
     $(".news-card-title.news-right-box .clickable span", HTML).each(function() {
       title.push($(this).text());
@@ -127,7 +130,15 @@ function inshort(url, res) {
     $(".news-card-content.news-right-box div ", HTML).each(function() {
       if ($(this).attr("itemprop") == "articleBody") paras.push($(this).text());
     });
-    var link = { content: paras, texts: title };
+    $(".news-card-image", HTML).each(function() {
+      imgUrl.push($(this).attr("style"));
+    });
+
+    for (i = 0; i < imgUrl.length; i++) {
+      imger = imgUrl[i];
+      imgUrl[i] = imger.substring(23, 127);
+    }
+    var link = { content: paras, texts: title, imageCard: imgUrl };
     // link = JSON.stringify(link);
 
     res.json(link);
