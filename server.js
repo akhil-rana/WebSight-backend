@@ -197,8 +197,7 @@ function gnews_scrape(url, res) {
     });
     var arr = [],
       arr1 = [],
-      imgArr = [],
-      arr2 = [];
+      imgArr = [];
     var temp = "https://news.google.com";
     var HTML = await page.content();
     $(".DY5T1d", HTML).each(function() {
@@ -232,10 +231,10 @@ function gnews_scrape(url, res) {
   })();
 }
 
-app.post("/gnews-search", bodyParser.json(), (req, res) => {
+app.post("/news/gnews-search", bodyParser.json(), (req, res) => {
   searchKeyNews = req.body.input;
   searchKeyNews = searchKeyNews.replace(/ /g, "+");
-  console.log(searchKey);
+  console.log(searchKeyNews);
   const url2 = "https://news.google.com/search?q=" + searchKeyNews;
   gnews_scrape(url2, res);
 });
