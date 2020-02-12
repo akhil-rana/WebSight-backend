@@ -33,6 +33,7 @@ function wiki_scrape(url) {
       }
     });
     console.log(str);
+    let wiki = { content: str };
     browser.close();
     return;
   })();

@@ -143,6 +143,42 @@ app.post("/news/newsLetter", bodyParser.json(), function(req, res, next) {
 });
 
 // server sleeping stopper
-app.get("/sleepstop", (req, res) => {
-  res.send("hello");
+// app.get("/sleepstop", (req, res) => {
+//   res.send("hello");
+// });
+
+var wikiquery = "hello world";
+
+app.post("/wikipedia", bodyParser.json(), (req, res) => {
+  wikiquery = req.body.input;
+
+  console.log("Input: " + wikiquery);
+  wikiquery = wikiquery.replace(/ /g, "+");
+
+  wiki_scrape(res, wikiquery);
 });
+
+function wiki_scrape(res, wikiquery) {
+  var url = "https://en.wikipedia.org/w/index.php?search=" + wikiquery;
+
+  (async () => {
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+    const page = await browser.newPage();
+    await page.goto(url, {
+      waitUntil: "networkidle2"
+    });
+    var contents = [];
+    var HTML = await page.content();
+    $("#bodyContent p", HTML).each(function() {
+      if ($(this).text() != "") {
+        contents.push($(this).text());
+      }
+    });
+    // console.log(str);
+    let wiki = { content: contents };
+
+    res.json(wiki);
+    browser.close();
+    return;
+  })();
+}
