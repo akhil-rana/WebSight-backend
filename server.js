@@ -193,3 +193,74 @@ function wiki_scrape(res, wikiquery) {
     return;
   })();
 }
+
+function gnews_scrape(url) {
+  (async () => {
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+    const page = await browser.newPage();
+    await page.goto(url, {
+      waitUntil: "networkidle2"
+    });
+    var arr = [],
+      arr1 = [],
+      imgArr = [],
+      arr2 = [];
+    var temp = "https://news.google.com";
+    var HTML = await page.content();
+    $(".DY5T1d", HTML).each(function() {
+      arr.push($(this).attr("href"));
+      arr1.push($(this).text());
+      imgArr.push(
+        $(this)
+          .parent()
+          .parent()
+          .parent()
+          .parent()
+          .children()
+          .first()
+          .children()
+          .first()
+          .children()
+          .first()
+          .attr("src")
+      );
+    });
+    let i = 0;
+    // $(".tvs3Id", HTML).each(function() {
+    //   imgArr.push($(this).attr("src"));
+    // });
+
+    for (i = 0; i < arr.length; i++) {
+      arr[i] = arr[i].slice(1);
+      arr[i] = temp.concat(arr[i]);
+      //imgUrl[i] = imger.substring(23, 127);
+    }
+
+    console.log(imgArr);
+    console.log(imgArr.length);
+    // console.log(i);
+    //console.log(arr1.length);
+
+    // $(" .s .st", HTML).each(function() {
+    //   arr2.push($(this).text());
+    // });
+    var outputNews = { titles: arr1, urls: arr };
+    // console.log(output);
+
+    res.json(outputNews);
+
+    browser.close();
+    return;
+  })();
+}
+
+app.post("/gnews-search", bodyParser.json(), (req, res) => {
+  searchKeyNews = req.body.input;
+  searchKeyNews = searchKeyNews.replace(/ /g, "+");
+  console.log(searchKey);
+
+  const url2 = "https://news.google.com/search?q=" + searchKeyNews;
+
+  // inshort(url);
+  gnews_scrape(url2, res);
+});
