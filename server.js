@@ -139,7 +139,6 @@ function inshort(url, res) {
       imgUrl[i] = imger.substring(23, imger.length - 2);
     }
     var link = { content: paras, texts: title, imageCard: imgUrl };
-    // link = JSON.stringify(link);
 
     res.json(link);
     browser.close();
@@ -152,11 +151,6 @@ app.post("/news/newsLetter", bodyParser.json(), function(req, res, next) {
 
   inshort(url, res);
 });
-
-// server sleeping stopper
-// app.get("/sleepstop", (req, res) => {
-//   res.send("hello");
-// });
 
 var wikiquery = "hello world";
 
@@ -225,30 +219,14 @@ function gnews_scrape(url) {
           .attr("src")
       );
     });
-    let i = 0;
-    // $(".tvs3Id", HTML).each(function() {
-    //   imgArr.push($(this).attr("src"));
-    // });
-
     for (i = 0; i < arr.length; i++) {
       arr[i] = arr[i].slice(1);
       arr[i] = temp.concat(arr[i]);
-      //imgUrl[i] = imger.substring(23, 127);
     }
 
-    console.log(imgArr);
-    console.log(imgArr.length);
-    // console.log(i);
-    //console.log(arr1.length);
-
-    // $(" .s .st", HTML).each(function() {
-    //   arr2.push($(this).text());
-    // });
-    var outputNews = { titles: arr1, urls: arr };
-    // console.log(output);
+    var outputNews = { titles: arr1, urls: arr, imgUrl: imgArr };
 
     res.json(outputNews);
-
     browser.close();
     return;
   })();
@@ -258,9 +236,6 @@ app.post("/gnews-search", bodyParser.json(), (req, res) => {
   searchKeyNews = req.body.input;
   searchKeyNews = searchKeyNews.replace(/ /g, "+");
   console.log(searchKey);
-
   const url2 = "https://news.google.com/search?q=" + searchKeyNews;
-
-  // inshort(url);
   gnews_scrape(url2, res);
 });
