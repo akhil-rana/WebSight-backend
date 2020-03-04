@@ -136,10 +136,9 @@ function inshort(url, res) {
 
     for (i = 0; i < imgUrl.length; i++) {
       imger = imgUrl[i];
-      imgUrl[i] = imger.substring(23, 127);
+      imgUrl[i] = imger.substring(23, imger.length - 2);
     }
     var link = { content: paras, texts: title, imageCard: imgUrl };
-    // link = JSON.stringify(link);
 
     res.json(link);
     browser.close();
@@ -152,11 +151,6 @@ app.post("/news/newsLetter", bodyParser.json(), function(req, res, next) {
 
   inshort(url, res);
 });
-
-// server sleeping stopper
-// app.get("/sleepstop", (req, res) => {
-//   res.send("hello");
-// });
 
 var wikiquery = "hello world";
 
@@ -193,3 +187,54 @@ function wiki_scrape(res, wikiquery) {
     return;
   })();
 }
+
+function gnews_scrape(url, res) {
+  (async () => {
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+    const page = await browser.newPage();
+    await page.goto(url, {
+      waitUntil: "networkidle2"
+    });
+    var arr = [],
+      arr1 = [],
+      imgArr = [];
+    var temp = "https://news.google.com";
+    var HTML = await page.content();
+    $(".DY5T1d", HTML).each(function() {
+      arr.push($(this).attr("href"));
+      arr1.push($(this).text());
+      imgArr.push(
+        $(this)
+          .parent()
+          .parent()
+          .parent()
+          .parent()
+          .children()
+          .first()
+          .children()
+          .first()
+          .children()
+          .first()
+          .attr("src")
+      );
+    });
+    for (i = 0; i < arr.length; i++) {
+      arr[i] = arr[i].slice(1);
+      arr[i] = temp.concat(arr[i]);
+    }
+
+    var outputNews = { titles: arr1, urls: arr, imgUrl: imgArr };
+
+    res.json(outputNews);
+    browser.close();
+    return;
+  })();
+}
+
+app.post("/news/gnews-search", bodyParser.json(), (req, res) => {
+  searchKeyNews = req.body.input;
+  searchKeyNews = searchKeyNews.replace(/ /g, "+");
+  console.log(searchKeyNews);
+  const url2 = "https://news.google.com/search?q=" + searchKeyNews;
+  gnews_scrape(url2, res);
+});
