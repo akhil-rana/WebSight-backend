@@ -237,7 +237,6 @@ app.post("/news/gnews-search", bodyParser.json(), (req, res) => {
   gnews_scrape(url2, res);
 });
 
-<<<<<<< HEAD
 app.post("/youtube", bodyParser.json(), (req, res) => {
   youtubequery = req.body.input;
   youtubequery = youtubequery.replace(/ /g, "+");
@@ -250,7 +249,7 @@ app.post("/youtube", bodyParser.json(), (req, res) => {
 // query = youtubeQuery.replace(/ /g, "+");
 // // console.log(query);
 
-youtube_scrape(res, url);
+// youtube_scrape(res, url);
 function youtube_scrape(res, url) {
   let arr = [];
   let arr1 = [];
@@ -288,6 +287,3 @@ function youtube_scrape(res, url) {
     return;
   })();
 }
-=======
-// YT to be added here after
->>>>>>> dc804cb24c31feb93f2fc57b2c6c8653c2b3fba9
