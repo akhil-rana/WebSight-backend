@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var youtubeQuery = "Minecraft";
+var youtubeQuery = req.body.input;
 query = youtubeQuery.replace(/ /g, "+");
 // console.log(query);
 var url = "https://www.youtube.com/results?search_query=" + query;
@@ -26,11 +26,11 @@ function youtube_scrape(url) {
     const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
     await page.goto(url, {
-      waitUntil: "networkidle2"
+      waitUntil: "networkidle2",
     });
     //   var str = "";
     var HTML = await page.content();
-    $("a#video-title", HTML).each(function() {
+    $("a#video-title", HTML).each(function () {
       arr.push($(this).attr("title"));
       arr1.push($(this).attr("href"));
     });

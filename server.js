@@ -42,18 +42,14 @@ function google_scrape(url, res) {
     const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
     await page.goto(url, {
-      waitUntil: "networkidle2"
+      waitUntil: "networkidle2",
     });
     var arr = [],
       arr1 = [],
       arr2 = [];
     var HTML = await page.content();
-    $(".rc .r .LC20lb", HTML).each(function() {
-      arr.push(
-        $(this)
-          .parent()
-          .attr("href")
-      );
+    $(".rc .r .LC20lb", HTML).each(function () {
+      arr.push($(this).parent().attr("href"));
       arr1.push($(this).text());
     });
     // $(" .s .st", HTML).each(function() {
@@ -71,7 +67,7 @@ function google_scrape(url, res) {
 
 function gTranslate(res1, query, outLang) {
   translate(query, { to: outLang })
-    .then(res => {
+    .then((res) => {
       console.log("Output: " + res.text);
       //=> I speak English
       //   console.log(res.from.language.iso);
@@ -79,13 +75,13 @@ function gTranslate(res1, query, outLang) {
 
       res1.json(output);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
     });
 }
 
 //Weather
-app.post("/news/weather", bodyParser.json(), function(req, res, next) {
+app.post("/news/weather", bodyParser.json(), function (req, res, next) {
   //if(err) throw err
   let apiKey = "fda279e459ede7124cf8b87abb94c20f";
   let city = req.body.input;
@@ -96,7 +92,7 @@ app.post("/news/weather", bodyParser.json(), function(req, res, next) {
 });
 
 function weatherDetails(url, res) {
-  request(url, function(err, response, body) {
+  request(url, function (err, response, body) {
     if (err) {
       console.log("error:", error);
     } else {
@@ -116,7 +112,7 @@ function inshort(url, res) {
     const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
     await page.goto(url, {
-      waitUntil: "networkidle2"
+      waitUntil: "networkidle2",
     });
     var paras = [];
     var title = [];
@@ -124,13 +120,15 @@ function inshort(url, res) {
     let imger;
 
     let HTML = await page.content();
-    $(".news-card-title.news-right-box .clickable span", HTML).each(function() {
-      title.push($(this).text());
-    });
-    $(".news-card-content.news-right-box div ", HTML).each(function() {
+    $(".news-card-title.news-right-box .clickable span", HTML).each(
+      function () {
+        title.push($(this).text());
+      }
+    );
+    $(".news-card-content.news-right-box div ", HTML).each(function () {
       if ($(this).attr("itemprop") == "articleBody") paras.push($(this).text());
     });
-    $(".news-card-image", HTML).each(function() {
+    $(".news-card-image", HTML).each(function () {
       imgUrl.push($(this).attr("style"));
     });
 
@@ -146,12 +144,12 @@ function inshort(url, res) {
   })();
 }
 
-app.post("/news/newsLetter", bodyParser.json(), function(req, res, next) {
+app.post("/news/newsLetter", bodyParser.json(), function (req, res, next) {
   var url = "https://inshorts.com/en/read";
 
   inshort(url, res);
 });
-
+//wiki
 var wikiquery = "hello world";
 
 app.post("/wikipedia", bodyParser.json(), (req, res) => {
@@ -170,11 +168,11 @@ function wiki_scrape(res, wikiquery) {
     const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
     await page.goto(url, {
-      waitUntil: "networkidle2"
+      waitUntil: "networkidle2",
     });
     var contents = [];
     var HTML = await page.content();
-    $("#bodyContent p", HTML).each(function() {
+    $("#bodyContent p", HTML).each(function () {
       if ($(this).text() != "") {
         contents.push($(this).text());
       }
@@ -193,14 +191,14 @@ function gnews_scrape(url, res) {
     const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
     await page.goto(url, {
-      waitUntil: "networkidle2"
+      waitUntil: "networkidle2",
     });
     var arr = [],
       arr1 = [],
       imgArr = [];
     var temp = "https://news.google.com";
     var HTML = await page.content();
-    $(".DY5T1d", HTML).each(function() {
+    $(".DY5T1d", HTML).each(function () {
       arr.push($(this).attr("href"));
       arr1.push($(this).text());
       imgArr.push(
@@ -238,3 +236,54 @@ app.post("/news/gnews-search", bodyParser.json(), (req, res) => {
   const url2 = "https://news.google.com/search?q=" + searchKeyNews;
   gnews_scrape(url2, res);
 });
+
+app.post("/youtube", bodyParser.json(), (req, res) => {
+  youtubequery = req.body.input;
+  youtubequery = youtubequery.replace(/ /g, "+");
+  var url = "https://www.youtube.com/results?search_query=" + youtubequery;
+  console.log("Input: " + youtubequery);
+
+  youtube_scrape(res, url);
+});
+// var youtubeQuery = req.body.input;
+// query = youtubeQuery.replace(/ /g, "+");
+// // console.log(query);
+
+youtube_scrape(res, url);
+function youtube_scrape(res, url) {
+  let arr = [];
+  let arr1 = [];
+  let arr2 = [];
+  //   let arr3 = [];
+  (async () => {
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+    const page = await browser.newPage();
+    await page.goto(url, {
+      waitUntil: "networkidle2",
+    });
+    //   var str = "";
+    var HTML = await page.content();
+    $("a#video-title", HTML).each(function () {
+      arr.push($(this).attr("title"));
+      arr1.push($(this).attr("href"));
+    });
+    // $("a#thumbnail yt-img-shadow img", HTML).each(function() {
+    //   // arr.push($(this).attr("title"));
+    //   arr3.push($(this).attr("src"));
+    // });
+    for (i = 0; i < arr1.length; i++) {
+      arr2.push(arr1[i].substring(9, arr1[i].length));
+    }
+    console.log(arr);
+    console.log(arr1);
+    console.log(arr2);
+    console.log(arr2.length);
+    // console.log(arr3.length);
+    // console.log(arr3);
+
+    let yt_results = { title: arr, url: arr1 };
+    res.json(yt_results);
+    browser.close();
+    return;
+  })();
+}
