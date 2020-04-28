@@ -237,6 +237,7 @@ app.post("/news/gnews-search", bodyParser.json(), (req, res) => {
   gnews_scrape(url2, res);
 });
 
+<<<<<<< HEAD
 app.post("/youtube", bodyParser.json(), (req, res) => {
   youtubequery = req.body.input;
   youtubequery = youtubequery.replace(/ /g, "+");
@@ -287,3 +288,6 @@ function youtube_scrape(res, url) {
     return;
   })();
 }
+=======
+// YT to be added here after
+>>>>>>> dc804cb24c31feb93f2fc57b2c6c8653c2b3fba9
