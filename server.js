@@ -284,7 +284,9 @@ function youtube_scrape(res, url) {
     //   arr3.push($(this).attr("src"));
     // });
     for (i = 0; i < arr1.length; i++) {
-      arr2.push(arr3[i].substring(9, arr1[i].length));
+      let id = arr3[i].substring(9, arr1[i].length);
+      id = "youtube/" + id;
+      arr2.push(id);
     }
     console.log(arr);
     console.log(arr1);
