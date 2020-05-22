@@ -265,7 +265,10 @@ function youtube_scrape(res, url) {
     var HTML = await page.content();
     $("a#video-title", HTML).each(function () {
       arr.push($(this).attr("title"));
-      arr1.push($(this).attr("href"));
+      arr1.push($(this).parent().parent().next().text());
+    });
+    $("a#video-title", HTML).each(function () {
+      arr.push($(this).attr("title"));
     });
     // $("a#thumbnail yt-img-shadow img", HTML).each(function() {
     //   // arr.push($(this).attr("title"));
@@ -281,7 +284,7 @@ function youtube_scrape(res, url) {
     // console.log(arr3.length);
     // console.log(arr3);
 
-    let yt_results = { title: arr, url: arr2 };
+    let yt_results = { title: arr, url: arr2, info: arr1 };
     res.json(yt_results);
     browser.close();
     return;
