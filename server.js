@@ -255,6 +255,8 @@ function youtube_scrape(res, url) {
   let arr1 = [];
   let arr2 = [];
   let arr3 = [];
+  let arr4 = [];
+
   (async () => {
     const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
@@ -269,10 +271,13 @@ function youtube_scrape(res, url) {
       let info = $(this).parent().parent().next().text();
       info = info.substring(info.lastIndexOf("•") + 1, info.length);
       info = info.trim().replace(/\s+/g, " ");
-      // let info1 = info.substring(0, info.indexOf("s") + 1);
-      // let info2 = info.substring(info.indexOf("s") + 2, info.length);
-      // info = info1 + " • " + info2;
+      let info1 = info.substring(0, info.indexOf("s") + 1);
+      let info2 = info.substring(info.indexOf("s") + 2, info.length);
+      info = info1 + " • " + info2;
       arr1.push(info);
+      let desc = $(this).parent().parent().parent().next().next().text();
+      desc = desc.trim().replace(/\s+/g, " ");
+      arr4.push(desc);
     });
     // $("a#thumbnail yt-img-shadow img", HTML).each(function() {
     //   // arr.push($(this).attr("title"));
@@ -288,7 +293,7 @@ function youtube_scrape(res, url) {
     // console.log(arr3.length);
     // console.log(arr3);
 
-    let yt_results = { title: arr, url: arr2, info: arr1 };
+    let yt_results = { title: arr, id: arr2, info: arr1, desc: arr4 };
     res.json(yt_results);
     browser.close();
     return;
