@@ -272,7 +272,7 @@ function youtube_scrape(res, url) {
     //   arr3.push($(this).attr("src"));
     // });
     for (i = 0; i < arr1.length; i++) {
-      arr2.push(arr1[i].substring(18, arr1[i].length));
+      arr2.push(arr1[i].substring(9, arr1[i].length));
     }
     console.log(arr);
     console.log(arr1);
@@ -281,7 +281,7 @@ function youtube_scrape(res, url) {
     // console.log(arr3.length);
     // console.log(arr3);
 
-    let yt_results = { title: arr, url: arr1 };
+    let yt_results = { title: arr, url: arr2 };
     res.json(yt_results);
     browser.close();
     return;
